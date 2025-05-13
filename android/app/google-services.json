@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "839987922474",
+    "project_id": "login-demo-prjk",
+    "storage_bucket": "login-demo-prjk.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839987922474:android:10a8d70b9803526028e553",
+        "android_client_info": {
+          "package_name": "com.example.food_recipe_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "839987922474-epq1vred758p34t9h22cvmd7lq2kka0f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaTeKXLjX_hQPeYN0SJpL7MDzZbRdUiGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "839987922474-epq1vred758p34t9h22cvmd7lq2kka0f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
