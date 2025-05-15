@@ -11,6 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
+  static const Color primaryColor = Color.fromRGBO(210, 13, 0, 1);
+
   Future<void> _logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
@@ -50,10 +52,10 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Profile", style: GoogleFonts.poppins(color: Colors.red)),
+        title: Text("Profile", style: GoogleFonts.poppins(color: primaryColor)),
         backgroundColor: Colors.white,
         elevation: 1,
-        iconTheme: const IconThemeData(color: Colors.red),
+        iconTheme: const IconThemeData(color: primaryColor),
       ),
       body: Column(
         children: [
@@ -63,7 +65,7 @@ class ProfilePage extends StatelessWidget {
             backgroundColor: Color(0xFFFFEBEE),
             child: CircleAvatar(
               radius: 50,
-              backgroundImage: AssetImage('assets/avatar.png'), // Make sure this exists in your pubspec.yaml
+              backgroundImage: AssetImage('assets/profile12.png'),
             ),
           ),
           const SizedBox(height: 12),
@@ -107,9 +109,9 @@ class ProfilePage extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(
-        leading: Icon(icon, color: Colors.red),
-        title: Text(title, style: GoogleFonts.poppins(color: Colors.red)),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.red),
+        leading: Icon(icon, color: ProfilePage.primaryColor),
+        title: Text(title, style: GoogleFonts.poppins(color: ProfilePage.primaryColor)),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: ProfilePage.primaryColor),
         onTap: onTap,
       ),
     );

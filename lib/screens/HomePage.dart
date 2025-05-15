@@ -13,6 +13,8 @@ import 'package:food_recipe_app/screens/ProfilePage.dart';
 import 'package:food_recipe_app/screens/SavedRecipesPage.dart'; // Import the SavedRecipesPage
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }

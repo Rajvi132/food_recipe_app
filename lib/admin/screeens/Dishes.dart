@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DishScreen extends StatefulWidget {
+  const DishScreen({super.key});
+
   @override
   _DishScreenState createState() => _DishScreenState();
 }

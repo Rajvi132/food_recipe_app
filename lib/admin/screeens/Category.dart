@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_recipe_app/admin/screeens/Dashboard.dart';
 
 class CategoryScreen extends StatefulWidget {
+  const CategoryScreen({super.key});
+
   @override
   _CategoryScreenState createState() => _CategoryScreenState();
 }
@@ -12,7 +14,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       FirebaseFirestore.instance.collection('categories');
 
   Future<void> _addCategory() async {
-    TextEditingController _controller = TextEditingController();
+    TextEditingController controller = TextEditingController();
 
     showDialog(
       context: context,
@@ -20,14 +22,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
         return AlertDialog(
           title: Text("Add New Category"),
           content: TextField(
-            controller: _controller,
+            controller: controller,
             decoration: InputDecoration(labelText: "Category Name"),
           ),
           actions: [
             TextButton(
               onPressed: () async {
-                if (_controller.text.isNotEmpty) {
-                  await _categoriesCollection.add({"name": _controller.text});
+                if (controller.text.isNotEmpty) {
+                  await _categoriesCollection.add({"name": controller.text});
                   Navigator.pop(context);
                 }
               },
@@ -44,7 +46,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Future<void> _editCategory(DocumentSnapshot document) async {
-    TextEditingController _controller =
+    TextEditingController controller =
         TextEditingController(text: document['name']);
 
     showDialog(
@@ -53,16 +55,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
         return AlertDialog(
           title: Text("Edit Category"),
           content: TextField(
-            controller: _controller,
+            controller: controller,
             decoration: InputDecoration(labelText: "Category Name"),
           ),
           actions: [
             TextButton(
               onPressed: () async {
-                if (_controller.text.isNotEmpty) {
+                if (controller.text.isNotEmpty) {
                   await _categoriesCollection
                       .doc(document.id)
-                      .update({"name": _controller.text});
+                      .update({"name": controller.text});
                   Navigator.pop(context);
                 }
               },
@@ -151,7 +153,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         child: Center(
                           child: DataTable(
                             columnSpacing: 20,
-                            headingRowColor: MaterialStateColor.resolveWith(
+                            headingRowColor: WidgetStateColor.resolveWith(
                                 (states) => Colors.grey[300]!),
                             columns: [
                               DataColumn(

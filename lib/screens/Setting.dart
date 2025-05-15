@@ -8,6 +8,8 @@ import 'package:food_recipe_app/screens/ProfilePage.dart';
 import 'package:food_recipe_app/screens/Login.dart'; // Ensure this is your login screen
 
 class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
+
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }

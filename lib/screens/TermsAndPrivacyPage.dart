@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class TermsAndPrivacyPage extends StatefulWidget {
+  const TermsAndPrivacyPage({super.key});
+
   @override
   _TermsAndPrivacyPageState createState() => _TermsAndPrivacyPageState();
 }

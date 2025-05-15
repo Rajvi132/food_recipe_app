@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 
 class MexicanPage extends StatefulWidget {
+  const MexicanPage({super.key});
+
   @override
   _MexicanPageState createState() => _MexicanPageState();
 }
@@ -14,7 +16,7 @@ class MexicanPage extends StatefulWidget {
 class _MexicanPageState extends State<MexicanPage> {
   List<Map<String, dynamic>> dishes = [];
   List<Map<String, dynamic>> favoriteDishes = [];
-  final Color brandColor = Color.fromRGBO(210, 13, 0, 1);
+  final Color brandColor = const Color.fromRGBO(210, 13, 0, 1);
 
   @override
   void initState() {
@@ -23,6 +25,7 @@ class _MexicanPageState extends State<MexicanPage> {
     loadFavorites();
   }
 
+  // Fetch Mexican dishes from Firestore
   void fetchMexicanDishes() async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('dishes')
@@ -46,6 +49,7 @@ class _MexicanPageState extends State<MexicanPage> {
     });
   }
 
+  // Toggle favorite status
   void toggleFavorite(Map<String, dynamic> dish) {
     final exists = favoriteDishes.any((d) => d['id'] == dish['id']);
     setState(() {
@@ -58,12 +62,14 @@ class _MexicanPageState extends State<MexicanPage> {
     });
   }
 
+  // Save favorites to SharedPreferences
   void saveFavorites() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> encoded = favoriteDishes.map((d) => json.encode(d)).toList();
     await prefs.setStringList('favoriteDishes', encoded);
   }
 
+  // Load favorites from SharedPreferences
   void loadFavorites() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? encoded = prefs.getStringList('favoriteDishes');
@@ -75,10 +81,12 @@ class _MexicanPageState extends State<MexicanPage> {
     }
   }
 
+  // Check if dish is favorite
   bool isFavorite(Map<String, dynamic> dish) {
     return favoriteDishes.any((d) => d['id'] == dish['id']);
   }
 
+  // Share dish on WhatsApp
   void shareOnWhatsApp(Map<String, dynamic> dish) async {
     final name = dish["name"];
     final time = dish["time"];
@@ -87,14 +95,19 @@ class _MexicanPageState extends State<MexicanPage> {
     final text = "🌮 *Check out this Mexican recipe!*\n\n"
         "*Dish:* $name\n"
         "*Time:* $time\n\n"
-        "📺 Watch: $videoUrl";
+        "📺 Watch here: $videoUrl";
 
     final url = "https://wa.me/?text=${Uri.encodeComponent(text)}";
     if (await canLaunchUrl(Uri.parse(url))) {
-      launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Could not launch WhatsApp")),
+      );
     }
   }
 
+  // Navigate to Favorites page
   void navigateToFavorites() {
     Navigator.push(
       context,
@@ -104,6 +117,7 @@ class _MexicanPageState extends State<MexicanPage> {
     );
   }
 
+  // Navigate to recipe detail page (replace with your actual detail page)
   void navigateToRecipeDetail(String dishId) {
     Navigator.push(
       context,
@@ -119,13 +133,14 @@ class _MexicanPageState extends State<MexicanPage> {
       appBar: AppBar(
         backgroundColor: brandColor,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text("Mexican Dishes"),
+        title: const Text("Mexican Dishes", style: TextStyle(color: Colors.white)),
+        centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.favorite),
+            icon: const Icon(Icons.favorite, color: Colors.white),
             onPressed: navigateToFavorites,
           ),
         ],
@@ -133,9 +148,9 @@ class _MexicanPageState extends State<MexicanPage> {
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: dishes.isEmpty
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
@@ -151,7 +166,8 @@ class _MexicanPageState extends State<MexicanPage> {
                     child: Stack(
                       children: [
                         Card(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.asset(
@@ -175,10 +191,10 @@ class _MexicanPageState extends State<MexicanPage> {
                                   size: 26,
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               GestureDetector(
                                 onTap: () => shareOnWhatsApp(dish),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.share,
                                   color: Colors.green,
                                   size: 26,
@@ -192,33 +208,36 @@ class _MexicanPageState extends State<MexicanPage> {
                           left: 0,
                           right: 0,
                           child: Container(
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: Colors.black54,
-                              borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+                              borderRadius: const BorderRadius.vertical(
+                                  bottom: Radius.circular(10)),
                             ),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   dish["name"],
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
-                                    border: Border.all(color: brandColor, width: 2),
+                                    border:
+                                        Border.all(color: brandColor, width: 2),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Text(
                                     dish["time"],
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -237,3 +256,4 @@ class _MexicanPageState extends State<MexicanPage> {
     );
   }
 }
+

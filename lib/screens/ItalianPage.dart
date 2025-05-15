@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 
 class ItalianPage extends StatefulWidget {
+  const ItalianPage({super.key});
+
   @override
   _ItalianPageState createState() => _ItalianPageState();
 }
@@ -64,13 +66,13 @@ class _ItalianPageState extends State<ItalianPage> {
   void saveFavorites() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> encoded = favoriteDishes.map((d) => json.encode(d)).toList();
-    await prefs.setStringList('favoriteDishes', encoded);
+    await prefs.setStringList('favoriteItalian', encoded);
   }
 
   // Load favorites from SharedPreferences
   void loadFavorites() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? encoded = prefs.getStringList('favoriteDishes');
+    List<String>? encoded = prefs.getStringList('favoriteItalian');
     if (encoded != null) {
       setState(() {
         favoriteDishes =

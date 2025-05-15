@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_recipe_app/admin/screeens/Dashboard.dart';
 
 class AdminLogin extends StatefulWidget {
+  const AdminLogin({super.key});
+
   @override
   _AdminLoginState createState() => _AdminLoginState();
 }

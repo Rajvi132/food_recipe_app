@@ -3,6 +3,8 @@ import 'package:food_recipe_app/admin/screeens/Dashboard.dart';
 
 
 class UserScreen extends StatefulWidget {
+  const UserScreen({super.key});
+
   @override
   _UserScreenState createState() => _UserScreenState();
 }
@@ -15,8 +17,8 @@ class _UserScreenState extends State<UserScreen> {
   ];
 
   void _editUser(int index) {
-    TextEditingController _nameController = TextEditingController(text: users[index]['name']);
-    TextEditingController _emailController = TextEditingController(text: users[index]['email']);
+    TextEditingController nameController = TextEditingController(text: users[index]['name']);
+    TextEditingController emailController = TextEditingController(text: users[index]['email']);
 
     showDialog(
       context: context,
@@ -26,16 +28,16 @@ class _UserScreenState extends State<UserScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(controller: _nameController, decoration: InputDecoration(labelText: "Name")),
-              TextField(controller: _emailController, decoration: InputDecoration(labelText: "Email")),
+              TextField(controller: nameController, decoration: InputDecoration(labelText: "Name")),
+              TextField(controller: emailController, decoration: InputDecoration(labelText: "Email")),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () {
                 setState(() {
-                  users[index]['name'] = _nameController.text;
-                  users[index]['email'] = _emailController.text;
+                  users[index]['name'] = nameController.text;
+                  users[index]['email'] = emailController.text;
                 });
                 Navigator.pop(context);
               },
@@ -102,7 +104,7 @@ class _UserScreenState extends State<UserScreen> {
                     child: Center(
                       child: DataTable(
                         columnSpacing: 20,
-                        headingRowColor: MaterialStateColor.resolveWith((states) => Colors.grey[300]!),
+                        headingRowColor: WidgetStateColor.resolveWith((states) => Colors.grey[300]!),
                         columns: [
                           DataColumn(label: Text("ID", style: TextStyle(fontWeight: FontWeight.bold))),
                           DataColumn(label: Text("Name", style: TextStyle(fontWeight: FontWeight.bold))),
@@ -121,14 +123,14 @@ class _UserScreenState extends State<UserScreen> {
                                   children: [
                                     ElevatedButton(
                                       onPressed: () => _editUser(index),
-                                      child: Text("Edit"),
                                       style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                                      child: Text("Edit"),
                                     ),
                                     SizedBox(width: 8),
                                     ElevatedButton(
                                       onPressed: () => _deleteUser(index),
-                                      child: Text("Delete"),
                                       style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                                      child: Text("Delete"),
                                     ),
                                   ],
                                 ),

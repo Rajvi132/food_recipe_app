@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 
 class SouthIndianPage extends StatefulWidget {
+  const SouthIndianPage({super.key});
+
   @override
   _SouthIndianPageState createState() => _SouthIndianPageState();
 }
@@ -14,7 +16,7 @@ class SouthIndianPage extends StatefulWidget {
 class _SouthIndianPageState extends State<SouthIndianPage> {
   List<Map<String, dynamic>> dishes = [];
   List<Map<String, dynamic>> favoriteDishes = [];
-  final Color brandColor = Color.fromRGBO(210, 13, 0, 1);
+  final Color brandColor = const Color.fromRGBO(210, 13, 0, 1);
 
   @override
   void initState() {
@@ -26,7 +28,7 @@ class _SouthIndianPageState extends State<SouthIndianPage> {
   void fetchSouthIndianDishes() async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('dishes')
-        .where('categories', isEqualTo: 'SouthIndian')
+        .where('category', isEqualTo: 'SouthIndian')
         .get();
 
     final List<Map<String, dynamic>> loadedDishes = snapshot.docs.map((doc) {
@@ -105,7 +107,6 @@ class _SouthIndianPageState extends State<SouthIndianPage> {
   }
 
   void navigateToRecipeDetail(String dishId) {
-    // You should replace this with your actual detail screen
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -120,13 +121,13 @@ class _SouthIndianPageState extends State<SouthIndianPage> {
       appBar: AppBar(
         backgroundColor: brandColor,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text("South-Indian Dishes"),
+        title: const Text("South-Indian Dishes"),
         actions: [
           IconButton(
-            icon: Icon(Icons.favorite),
+            icon: const Icon(Icons.favorite),
             onPressed: navigateToFavorites,
           ),
         ],
@@ -134,9 +135,9 @@ class _SouthIndianPageState extends State<SouthIndianPage> {
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: dishes.isEmpty
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
@@ -152,7 +153,8 @@ class _SouthIndianPageState extends State<SouthIndianPage> {
                     child: Stack(
                       children: [
                         Card(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.asset(
@@ -171,15 +173,17 @@ class _SouthIndianPageState extends State<SouthIndianPage> {
                               GestureDetector(
                                 onTap: () => toggleFavorite(dish),
                                 child: Icon(
-                                  favorite ? Icons.favorite : Icons.favorite_border,
+                                  favorite
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
                                   color: Colors.redAccent,
                                   size: 26,
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               GestureDetector(
                                 onTap: () => shareOnWhatsApp(dish),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.share,
                                   color: Colors.green,
                                   size: 26,
@@ -193,25 +197,27 @@ class _SouthIndianPageState extends State<SouthIndianPage> {
                           left: 0,
                           right: 0,
                           child: Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.all(8),
+                            decoration: const BoxDecoration(
                               color: Colors.black54,
-                              borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+                              borderRadius:
+                                  BorderRadius.vertical(bottom: Radius.circular(10)),
                             ),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   dish["name"],
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     border: Border.all(color: brandColor, width: 2),
@@ -219,7 +225,7 @@ class _SouthIndianPageState extends State<SouthIndianPage> {
                                   ),
                                   child: Text(
                                     dish["time"],
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -238,3 +244,4 @@ class _SouthIndianPageState extends State<SouthIndianPage> {
     );
   }
 }
+

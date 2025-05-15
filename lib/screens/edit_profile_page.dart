@@ -4,7 +4,7 @@ class EditProfilePage extends StatefulWidget {
   final String title;
   final String value;
 
-  EditProfilePage({required this.title, required this.value});
+  const EditProfilePage({super.key, required this.title, required this.value});
 
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
@@ -39,8 +39,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
               onPressed: () {
                 Navigator.pop(context, _controller.text); // Pass new value back
               },
-              child: Text("Save"),
               style: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(210, 13, 0, 1)),
+              child: Text("Save"),
             ),
           ],
         ),

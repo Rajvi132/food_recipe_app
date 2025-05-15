@@ -10,6 +10,8 @@ import 'package:food_recipe_app/admin/Alogin.dart';
 import 'package:food_recipe_app/admin/screeens/Dashboard.dart';
 
 class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -49,11 +51,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _addProfile() {
-    TextEditingController _nameController = TextEditingController();
-    TextEditingController _dobController = TextEditingController();
-    TextEditingController _emailController = TextEditingController();
-    TextEditingController _phoneController = TextEditingController();
-    TextEditingController _passwordController = TextEditingController();
+    TextEditingController nameController = TextEditingController();
+    TextEditingController dobController = TextEditingController();
+    TextEditingController emailController = TextEditingController();
+    TextEditingController phoneController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
 
     showDialog(
       context: context,
@@ -63,11 +65,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           content: SingleChildScrollView(
             child: Column(
               children: [
-                _buildTextField(_nameController, "Full Name"),
-                _buildTextField(_dobController, "Date of Birth"),
-                _buildTextField(_emailController, "Email"),
-                _buildTextField(_phoneController, "Phone Number"),
-                _buildTextField(_passwordController, "Password", isPassword: true),
+                _buildTextField(nameController, "Full Name"),
+                _buildTextField(dobController, "Date of Birth"),
+                _buildTextField(emailController, "Email"),
+                _buildTextField(phoneController, "Phone Number"),
+                _buildTextField(passwordController, "Password", isPassword: true),
               ],
             ),
           ),
@@ -75,21 +77,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
             TextButton(
               onPressed: () async {
                 await FirebaseFirestore.instance.collection('admin_profiles').doc('admin1').set({
-                  "name": _nameController.text,
-                  "dob": _dobController.text,
-                  "email": _emailController.text,
-                  "phone": _phoneController.text,
-                  "password": _passwordController.text,
+                  "name": nameController.text,
+                  "dob": dobController.text,
+                  "email": emailController.text,
+                  "phone": phoneController.text,
+                  "password": passwordController.text,
                   "imageUrl": ""
                 });
 
                 setState(() {
                   user = {
-                    "name": _nameController.text,
-                    "dob": _dobController.text,
-                    "email": _emailController.text,
-                    "phone": _phoneController.text,
-                    "password": _passwordController.text,
+                    "name": nameController.text,
+                    "dob": dobController.text,
+                    "email": emailController.text,
+                    "phone": phoneController.text,
+                    "password": passwordController.text,
                   };
                   imageUrl = "";
                 });
@@ -110,11 +112,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _editProfile() {
-    TextEditingController _nameController = TextEditingController(text: user["name"]);
-    TextEditingController _dobController = TextEditingController(text: user["dob"]);
-    TextEditingController _emailController = TextEditingController(text: user["email"]);
-    TextEditingController _phoneController = TextEditingController(text: user["phone"]);
-    TextEditingController _passwordController = TextEditingController(text: user["password"]);
+    TextEditingController nameController = TextEditingController(text: user["name"]);
+    TextEditingController dobController = TextEditingController(text: user["dob"]);
+    TextEditingController emailController = TextEditingController(text: user["email"]);
+    TextEditingController phoneController = TextEditingController(text: user["phone"]);
+    TextEditingController passwordController = TextEditingController(text: user["password"]);
 
     showDialog(
       context: context,
@@ -125,11 +127,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _buildTextField(_nameController, "Full Name"),
-                _buildTextField(_dobController, "Date of Birth"),
-                _buildTextField(_emailController, "Email"),
-                _buildTextField(_phoneController, "Phone Number"),
-                _buildTextField(_passwordController, "Password", isPassword: true),
+                _buildTextField(nameController, "Full Name"),
+                _buildTextField(dobController, "Date of Birth"),
+                _buildTextField(emailController, "Email"),
+                _buildTextField(phoneController, "Phone Number"),
+                _buildTextField(passwordController, "Password", isPassword: true),
               ],
             ),
           ),
@@ -137,19 +139,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
             TextButton(
               onPressed: () async {
                 await FirebaseFirestore.instance.collection('admin_profiles').doc('admin1').update({
-                  "name": _nameController.text,
-                  "dob": _dobController.text,
-                  "email": _emailController.text,
-                  "phone": _phoneController.text,
-                  "password": _passwordController.text,
+                  "name": nameController.text,
+                  "dob": dobController.text,
+                  "email": emailController.text,
+                  "phone": phoneController.text,
+                  "password": passwordController.text,
                 });
 
                 setState(() {
-                  user["name"] = _nameController.text;
-                  user["dob"] = _dobController.text;
-                  user["email"] = _emailController.text;
-                  user["phone"] = _phoneController.text;
-                  user["password"] = _passwordController.text;
+                  user["name"] = nameController.text;
+                  user["dob"] = dobController.text;
+                  user["email"] = emailController.text;
+                  user["phone"] = phoneController.text;
+                  user["password"] = passwordController.text;
                 });
 
                 Navigator.pop(context);
@@ -268,20 +270,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _editProfile,
-                child: Text("Edit Profile"),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                child: Text("Edit Profile"),
               ),
               SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _logout,
-                child: Text("Logout"),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                child: Text("Logout"),
               ),
               SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _deleteProfile,
-                child: Text("Delete Profile"),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.black87),
+                child: Text("Delete Profile"),
               ),
             ],
           ),

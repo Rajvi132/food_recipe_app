@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'FavoritesPage.dart';     // External favorites page with full logic
+import 'FavoritesPage.dart';
 
 class GujaratiDishesPage extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _GujaratiDishesPageState extends State<GujaratiDishesPage> {
   List<Map<String, dynamic>> dishes = [];
   List<Map<String, dynamic>> favoriteDishes = [];
   Set<String> favoriteDishIds = {};
-  final Color brandColor = Color.fromRGBO(210, 13, 0, 1);
+  final Color brandColor = Color.fromRGBO(210, 13, 0, 1); // Your custom brand color
   bool isLoadingDishes = true;
 
   @override
@@ -30,7 +30,7 @@ class _GujaratiDishesPageState extends State<GujaratiDishesPage> {
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('dishes')
-          .where('category', isEqualTo: 'Gujarati') // Fixed category spelling
+          .where('category', isEqualTo: 'Guajarati') // Make sure spelling matches Firestore
           .get();
 
       final List<Map<String, dynamic>> loadedDishes = snapshot.docs.map((doc) {
@@ -58,7 +58,9 @@ class _GujaratiDishesPageState extends State<GujaratiDishesPage> {
     }
   }
 
-  void toggleFavorite(Map<String, dynamic> dish) {
+  void toggleFavorite(Map<String, dynamic> dish) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     setState(() {
       if (favoriteDishIds.contains(dish['id'])) {
         favoriteDishIds.remove(dish['id']);
@@ -67,31 +69,25 @@ class _GujaratiDishesPageState extends State<GujaratiDishesPage> {
         favoriteDishIds.add(dish['id']);
         favoriteDishes.add(dish);
       }
-      saveFavorites();
     });
-  }
 
-  void saveFavorites() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> encoded = favoriteDishes.map((d) => json.encode(d)).toList();
-    await prefs.setStringList('favoriteGujaratiDishes', encoded);
+    await prefs.setStringList('allFavoriteDishes', encoded);
   }
 
   void loadFavorites() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? encoded = prefs.getStringList('favoriteGujaratiDishes');
+    List<String>? encoded = prefs.getStringList('allFavoriteDishes');
     if (encoded != null) {
+      final allFavorites = encoded
+          .map((s) => Map<String, dynamic>.from(json.decode(s)))
+          .toList();
       setState(() {
-        favoriteDishes =
-            encoded.map((s) => Map<String, dynamic>.from(json.decode(s))).toList();
+        favoriteDishes = allFavorites;
         favoriteDishIds =
-            favoriteDishes.map((dish) => dish['id'] as String).toSet();
+            allFavorites.map((dish) => dish['id'] as String).toSet();
       });
     }
-  }
-
-  bool isFavorite(Map<String, dynamic> dish) {
-    return favoriteDishIds.contains(dish['id']);
   }
 
   void shareOnWhatsApp(Map<String, dynamic> dish) async {
@@ -110,15 +106,6 @@ class _GujaratiDishesPageState extends State<GujaratiDishesPage> {
     }
   }
 
-  void openRecipeDetails(String dishId) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => RecipeDetailScreen(dish: dishId),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,11 +119,12 @@ class _GujaratiDishesPageState extends State<GujaratiDishesPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => FavoritesPage(favoriteDishes: favoriteDishes),
+                  builder: (context) =>
+                      FavoritesPage(favoriteDishes: favoriteDishes),
                 ),
               );
             },
-          ),
+          )
         ],
       ),
       body: isLoadingDishes
@@ -155,31 +143,71 @@ class _GujaratiDishesPageState extends State<GujaratiDishesPage> {
                       itemCount: dishes.length,
                       itemBuilder: (context, index) {
                         final dish = dishes[index];
-                        final favorite = isFavorite(dish);
+                        final isFav = favoriteDishIds.contains(dish['id']);
 
                         return GestureDetector(
-                          onTap: () => openRecipeDetails(dish['id']),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    RecipeDetailScreen(dish: dish['id']),
+                              ),
+                            );
+                          },
                           child: Stack(
                             children: [
                               Card(
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: BorderSide(color: brandColor, width: 2),
+                                ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    dish["image"],
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    loadingBuilder: (context, child, progress) {
-                                      if (progress == null) return child;
-                                      return Center(
-                                          child: CircularProgressIndicator());
-                                    },
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Icon(Icons.error,
-                                          size: 50, color: Colors.red);
-                                    },
+                                  child: Stack(
+                                    children: [
+                                      Image.asset(
+                                        dish["image"],
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Center(
+                                            child: Icon(Icons.broken_image,
+                                                color: Colors.grey, size: 40),
+                                          );
+                                        },
+                                      ),
+                                      Positioned(
+                                        bottom: 0,
+                                        left: 0,
+                                        right: 0,
+                                        child: Container(
+                                          padding: EdgeInsets.all(6),
+                                          color: Colors.black.withOpacity(0.6),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                dish["name"],
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              Text(
+                                                "⏱ ${dish["time"]}",
+                                                style: TextStyle(
+                                                    color: Colors.white70,
+                                                    fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -191,7 +219,7 @@ class _GujaratiDishesPageState extends State<GujaratiDishesPage> {
                                     GestureDetector(
                                       onTap: () => toggleFavorite(dish),
                                       child: Icon(
-                                        favorite
+                                        isFav
                                             ? Icons.favorite
                                             : Icons.favorite_border,
                                         color: Colors.redAccent,

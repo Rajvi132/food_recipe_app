@@ -6,6 +6,8 @@ import 'package:food_recipe_app/admin/screeens/Users.dart';
 
 
 class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
+
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }

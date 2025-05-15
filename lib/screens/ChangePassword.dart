@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ChangePasswordPage extends StatefulWidget {
+  const ChangePasswordPage({super.key});
+
   @override
   _ChangePasswordPageState createState() => _ChangePasswordPageState();
 }
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   
   @override
   Widget build(BuildContext context) {
@@ -27,8 +29,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 // Change password logic
                 Navigator.pop(context);
               },
-              child: Text("Save"),
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: Text("Save"),
             ),
           ],
         ),

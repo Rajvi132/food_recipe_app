@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 
 class PunjabiPage extends StatefulWidget {
+  const PunjabiPage({super.key});
+
   @override
   _PunjabiPageState createState() => _PunjabiPageState();
 }
@@ -105,7 +107,6 @@ class _PunjabiPageState extends State<PunjabiPage> {
   }
 
   void navigateToRecipeDetail(String dishId) {
-    // You should replace this with your actual detail screen
     Navigator.push(
       context,
       MaterialPageRoute(

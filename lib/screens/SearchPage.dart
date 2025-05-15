@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import '../screens/HomePage.dart';
 
 class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
+
   @override
   _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   List<DocumentSnapshot> _searchResults = [];
 
   void _performSearch(String query) async {
@@ -20,7 +22,7 @@ class _SearchPageState extends State<SearchPage> {
     final snapshot = await FirebaseFirestore.instance
         .collection('dishes')
         .where('name', isGreaterThanOrEqualTo: query)
-        .where('name', isLessThanOrEqualTo: query + '\uf8ff')
+        .where('name', isLessThanOrEqualTo: '$query\uf8ff')
         .get();
 
     setState(() {

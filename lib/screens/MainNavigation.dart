@@ -5,6 +5,8 @@ import 'package:food_recipe_app/screens/ProfilePage.dart';
 
 
 class MainNavigation extends StatefulWidget {
+  const MainNavigation({super.key});
+
   @override
   _MainNavigationState createState() => _MainNavigationState();
 }
